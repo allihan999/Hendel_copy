@@ -1,0 +1,41 @@
+﻿@using Hendel.DAL_copy;
+@model IEnumerable<MyKorzina>
+<div>
+    @if (Model.Count() < 1)
+    {
+        <h1 class="display-4 text-center">Пусто</h1>
+    }
+    else
+    {
+        <h3 class="display-4 text-center" style="font-weight: bold">Мои покупки</h3>
+    }
+
+    <div>
+        <div style="display: flex; flex-direction: column; margin-left: 100px">
+            @foreach (var itemCollection in Model)
+            {
+                foreach (var item in itemCollection.KorzinaWatches)
+                {
+                    <div style="border: 1px solid black">
+                        <div>
+                            @if (item.Image != null)
+                            {
+                                <img class="img" style="text-align: center; margin-left: auto; width: 200px; margin-right: auto;" src="data:image/jpeg;base64,@(Convert.ToBase64String(item.Image))" />
+                            }
+                        </div>
+
+                        <div style="position: absolute; margin-top: -210px; margin-left: 250px;">
+                            <p> <a style="font-weight: bold">Название товара:</a> @item.Name </p>
+                            <p> <a style="font-weight: bold">Цвет:</a> @item.Description </p>
+                            <p> <a style="font-weight: bold">Цена:</a> @item.Price </p>
+                        </div>
+                    </div>
+                }
+          
+                @*    <div>
+                    <p> <a style="font-weight: bold">Вы купили эти часы уже :</a> @itemCollection.AmountBuyUser</p>
+                </div> *@
+            }
+        </div>
+    </div>
+</div>

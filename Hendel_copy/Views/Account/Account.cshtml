@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Hendel.DAL_copy.Models.User>
+
+<form asp-anti-forgery="true">
+    @foreach (var item in Model)
+    {
+        <div>
+            <div class="text-center">
+                <div>
+                    <img style="width: 200px; margin-left: 2px" src="~/Image/Group 34 (1).png" />
+
+                    <div class="text-center">
+                        <img src="~/Image/РамкаДляРегистрации.png" style="width: 1100px; height: 570px ; margin-top:-70px;" />
+                    </div>
+                </div>
+            </div>
+
+            <div style="position: absolute; margin-top: -450px; margin-left: 450px">
+                <div style="display: flex;">
+                    <p> <p style="font-weight: bold">Имя: </p> @item.Name</p>
+                </div>
+
+                <div style="display: flex;">
+                    <p> <p style="font-weight: bold">Фамилия: </p> @item.Surname</p>
+                </div>
+
+                <div style="display: flex;">
+                    <p> <p style="font-weight: bold">Почта: </p> @item.Email</p>
+                </div>
+
+                <div style="display: flex;">
+                    <a class="btn btn-dark" asp-area="" asp-action="MyKorzinaView" asp-controller="Account" asp-route-id="@item.Id">Мои покупки</a>
+                </div>
+
+                <div>
+                    <a class="btn btn-danger" style="display:flex;justify-content:left" asp-action="LogOut" asp-controller="Account">Выйти из аккаунта</a>
+                </div>
+                
+            </div>
+
+        </div>
+    }
+</form>

@@ -1,0 +1,43 @@
+﻿@model Hendel_copy.Models.WatchEdit_Archive_View_Models;
+
+
+<form asp-area="" asp-action="AddCatalog_Is_a_Archive" asp-controller="Catalog" enctype="multipart/form-data">
+
+    <div class="text-center">
+        <label asp-for="Image" class="control-label">Фото</label>
+        <p> <input name="Image" type="file" class="form-control" /> </p>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Название</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label">Описание</label>
+        <input type="text" asp-for="Description" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Amount" class="control-label">В наличии / не в начилии</label>
+        <input type="text" asp-for="Amount" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price" class="control-label">Цена</label>
+        <input type="text" asp-for="Price" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="WatchCategory" class="control-label">Мужские/Женские</label>
+        <select asp-for="WatchCategory">
+            <option value="Мужские">Мужские</option>
+            <option value="Женские">Женские</option>
+        </select>
+    </div>
+
+    <div>
+        <input type="submit" value="Отправить" class="btn btn-info" />
+    </div>
+
+</form>

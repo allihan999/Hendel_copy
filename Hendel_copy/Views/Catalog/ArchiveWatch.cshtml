@@ -1,0 +1,38 @@
+﻿@using Hendel.DAL_copy;
+@model IEnumerable<Archive>
+@{
+    ViewData["Title"] = "View";
+}
+
+<div style="display: flex; justify-content: center;">
+    <h3 style="margin-left: -15px; font-weight: bold;">Архив</h3>
+</div>
+
+<div>
+    <div style="display: flex; border: none; width: 1407px">
+
+        <div style="background: white; width: 1519px; height: 100%; display: flex; flex-wrap: wrap; margin-left: -112px">
+            @if (Model.Count() < 1)
+            {
+                <h5 class="display-4 text-center">Архив пуст</h5>
+            }
+
+            @foreach (var item in Model)
+            {
+                <div class="coll" style="text-align: center; margin-top: 10px; border: 2px solid #D9D9D9; width: 379.75px; height: 540px">
+                    <div class="col" border: 1px solid black style="height: 539px">
+                        @if (item.Image != null)
+                        {
+                            <img class="img" style="text-align: center; margin-left: auto; width: 250px; margin-right: auto;" src="data:image/jpeg;base64,@(Convert.ToBase64String(item.Image))" />
+                        }
+                        <p style="font-weight: lighter">Big Bang </p>
+                        <h4 class="h4" style="margin-left: auto; margin-right:auto; margin-top:15px; font-size: 17px">@item.Name </h4>
+                        <p style="border: 1px solid red; width: 40px; height: 2px; background-color: red; margin-top: -6px; margin-left: 167px; "></p>
+                        <a hidden="@(User.Identity.IsAuthenticated ? false : true)" class="button_Edit_Archive_Is_a_Catalog" asp-area="" asp-action="AddCatalog_Is_a_Archive" asp-controller="Catalog" asp-route-id="@item.Id">Изменит параметры</a>
+                        <a class="buttona" asp-controller="Catalog" asp-action="CreateAddingFromTheArchive" asp-route-id="@item.Id"> Добавить в каталог c количесвтом 5 шт. </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

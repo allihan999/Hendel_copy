@@ -1,0 +1,112 @@
+﻿@using Hendel.DAL_copy;
+@using Hendel.DAL_copy.Models;
+
+@model IEnumerable<Favorite>;
+
+@{
+    ViewData["Title"] = "Favorite";
+}
+<div>
+    <div class="text-center">
+        <img src="~/Image/Group 34 (2).png" style="width: 225px" />
+        <img src="~/Image/Иконки/БоковыеЛинниДляЗаказа.png" style="width: 100%; margin-top: -180px;" />
+    </div>
+</div>
+
+<div class="justify-content-md-end" style="margin-bottom: 20px; margin-top: 30px; justify-content: center">
+    <div class="text-center">
+        @if (Model.Count() < 1)
+        {
+            <h1 class="text-center" style="font-weight: bold">Пусто</h1>
+        }
+    </div>
+</div>
+
+<div style="margin-left: 10px">
+    <div style="display: flex; flex-wrap: wrap; margin-left: 183px">
+       
+        @foreach (var item in Model)
+        {
+            <div style="text-align: center; margin-bottom: 100px; margin-top: 10px; height: 400px; border: 1px solid black; width: 250.75px; margin-right: 90px">
+
+                <div>
+                    <p style="font-weight: bold">Заказ</p>
+
+                    <div>
+                        @if (item.Image != null)
+                        {
+                            <img class="img" style="text-align: center; margin-left: auto; width: 170px; margin-right: auto; margin-top: -30px" src="data:image/jpeg;base64,@(Convert.ToBase64String(item.Image))" />
+                        }
+                    </div>
+
+                    <div>
+                        <p style="font-weight: bold;font-size: 13.5px;margin-top: -1px;position: absolute;margin-left: 26px;"> Часы: </p>
+                        <p style="font-weight: normal; margin-left: -60px; font-size: 13.5px;">@item.Name</p>
+
+                        <p style="font-weight: bold; font-size: 13.5px; position: absolute; margin-top: -12px; margin-left: 25px"> Цвет: </p>
+                        <p style="font-weight: normal; margin-left: -70px; font-size: 13.5px; margin-top: -10px"> @item.Description</p>
+
+                        <p style="font-weight: bold; font-size: 13.5px; position: absolute; margin-top: -13px; margin-left: 26px;">Цена: </p>
+                        <p style="font-weight: normal; margin-left: -57px; margin-top: -10px; margin-bottom: 23px; font-size: 13.5px;"> @item.Price <span style="font-weight: normal">EUR</span> </p>
+                    </div>
+
+                </div>
+
+                <form method="post" asp-controller="Catalog" asp-action="CollWatch">
+
+                    <input type="number" id="collWatch" name="collWatch" placeholder="Количесвто шт." asp-for="@item.Amount" asp-for="collWatch" style=" width: 250px;
+                       border: none;
+                       border: 2px solid black;
+                       position: absolute;
+                       background-color: transparent;
+                       color: inherit;
+                       outline: none;
+                       margin-top: 50px;
+                       margin-left: -30px" />
+
+                    <input style="visibility: collapse" asp-for="@item.Id" id="collWatch_id" name="collWatch_id" />
+
+
+                    <input type="submit" style="text-decoration: none;
+                                                background-color: black;
+                                                color: white;
+                                                margin-bottom: 10px;
+                                                padding-left: 45px;
+                                                padding-right: 45px;
+                                                padding-top: 3.5px;
+                                                padding-bottom: 3.5px;
+                                                font-size: 13.5px;
+                                                margin-top: 90px;
+                                                position: absolute;
+                                                margin-left: -179px;"/>
+                </form>
+
+                @* <form method="post" asp-controller="Catalog" asp-action="IsModelsWindowMethod">
+                    
+                    <input type="submit" id="isModelWindow" name="isModelWindow" placeholder="Отменить" style="text-decoration: none;
+                                                                            color: red;
+                                                                            margin-bottom: 0px;
+                                                                            padding-left: 50px;
+                                                                            padding-right: 50px;
+                                                                            padding-top: 3.5px;
+                                                                            padding-bottom: 3.5px;
+                                                                            margin-top: 96px;
+                                                                            position: absolute;
+                                                                            margin-left: -85px;
+                                                                            font-size: 14px;
+                                                                            font-weight: bold">
+
+                    <input style="visibility: collapse" asp-for="@item.Id" id="BoolWatch_id" name="BoolWatch_id" />
+                </form> *@
+
+               @*  @if(@item.IsModelWindow == true)
+                {
+                    <div style="background: black;">
+                        
+                    </div>
+                } *@
+
+            </div>
+        }
+    </div>
+</div>

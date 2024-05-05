@@ -1,0 +1,272 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+
+
+.BlackKvadratFutr {
+    position: absolute;
+    background: black;
+    height: 200px;
+    width: 100%;
+    margin-top: 180px;
+}
+
+
+
+.FutrDiscriptionOne {
+    position: absolute;
+    margin-left: 350px;
+    margin-top: 0px;
+    font-size: 13px;
+    font-weight: lighter;
+    font-family: Montserrat;
+    line-height: 30px;
+}
+
+.Company {
+    color: white;
+    margin-top: 20px;
+    font-weight: bold;
+    font-family: Montserrat;
+    font-size: 13px;
+}
+
+.RedLineFuty {
+    height: 2px;
+    background: red;
+    width: 70px;
+    position: absolute;
+    margin-top: -5px;
+    margin-left: 82px;
+}
+
+.AboutUsFutr {
+    color: white;
+}
+
+.NashiUslugiFutr {
+    color: white;
+}
+
+.PolicyFutr {
+    color: white;
+}
+
+.PartnFutr {
+    color: white;
+}
+
+
+
+
+
+.FutrDiscriptionSecond {
+    position: absolute;
+    margin-left: 720px;
+    margin-top: 0px;
+    font-size: 13px;
+    font-weight: lighter;
+    font-family: Montserrat;
+    line-height: 30px;
+}
+
+.Pomosh {
+    color: white;
+    margin-top: 20px;
+    font-weight: bold;
+    font-family: Montserrat;
+    font-size: 13px;
+}
+
+.RedLineFutr {
+    height: 2px;
+    background: red;
+    width: 60px;
+    position: absolute;
+    margin-top: -5px;
+    margin-left: 66px;
+}
+
+.AboutUsFutrS {
+    color: white;
+}
+
+.NashiUslugiFutrS {
+    color: white;
+}
+
+.PolicyFutrS {
+    color: white;
+}
+
+.PartnFutrS {
+    color: white;
+}
+
+
+
+
+
+.FutrDiscriptionThird {
+    position: absolute;
+    margin-left: 1100px;
+    margin-top: 20px;
+    font-size: 13px;
+    font-weight: lighter;
+    font-family: Montserrat;
+    line-height: 30px;
+    color: white;
+}
+
+.RedLineFutr3 {
+    height: 2px;
+    background: red;
+    width: 105px;
+    position: absolute;
+    margin-top: -5px;
+    margin-left: 15px;
+}
+
+.NashiUslugiFutr3 {
+    margin-top: -3px;
+}
+
+.imagef1 {
+    width: 30px;
+}
+
+.imagef2 {
+    position: absolute;
+    margin-top: -35px;
+    margin-left: 50px;
+    width: 30px;
+}
+
+.imagef3 {
+    position: absolute;
+    margin-top: -35px;
+    margin-left: 100px;
+    width: 30px;
+}
+
+.disfutr {
+    margin-left: -70px;
+}
+
+.buttona {
+    text-decoration: none;
+    position: absolute;
+    margin-top: 15px;
+    margin-left: -140px;
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.buttona1 {
+    text-decoration: none;
+    position: absolute;
+    margin-top: 70px;
+    margin-left: -105px;
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.buttona2 {
+    text-decoration: none;
+    position: absolute;
+    margin-top: 40px;
+    margin-left: -125px;
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.WomanCatalog {
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
+    margin-bottom: 80px;
+    margin-left: 300px;
+    font-weight: bold
+}
+
+.butArchive {
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
+    margin-bottom: 80px;
+    margin-left: 1120px;
+    font-weight: bold;
+}
+
+
+.button_Edit_Archive_Is_a_Catalog {
+    text-decoration: none;
+    position: absolute;
+    margin-top: 40px;
+    margin-left: -125px;
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+
+.butHistoryUsers {
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
+    margin-bottom: 80px;
+    font-weight: bold;
+    margin-left: 900px;
+    margin-top: -30px;
+    position: absolute;
+}
+
+
+
+
+.col:hover {
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+}
+
+.col {
+    overflow: hidden;
+}
+
+.img {
+    transition: 1.5s;
+}
+
+    .img:hover {
+        transform: scale(1.1);
+    }
+
+.h4:hover {
+    transform: scale(1.1);
+}
+
+.pp:hover {
+    transform: scale(1.1);
+}

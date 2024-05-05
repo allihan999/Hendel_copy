@@ -1,0 +1,57 @@
+﻿@using Hendel.DAL_copy;
+@model LoginModels;
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<form asp-action="Input" asp-controller="Account" asp-anti-forgery="true">
+    <div class="text-center">
+        <div>
+            <img style="width: 200px; margin-left: 2px" src="~/Image/Авторизация(картинка).png" />
+
+            <input asp-for=Name type="text" style=" width: 250px;
+                       border: none;
+                       border-bottom: 2px solid black;
+                       position: absolute;
+                       margin-top: 190px;
+                       margin-left: -222px;
+                       background-color: transparent;
+                       color: inherit;
+                       outline: none;" />
+            <img src="~/Image/Слова/имя (1).png" style="margin-top: 170px; margin-left: -221px; position: absolute; width: 25px" />
+
+
+
+          
+            <input asp-for=Password type="password" style=" width: 250px;
+                       border: none;
+                       border-bottom: 2px solid black;
+                       position: absolute;
+                       margin-top: 270px;
+                       margin-left: -222px;
+                       background-color: transparent;
+                       color: inherit;
+                       outline: none;" />
+            <img src="~/Image/Слова/пароль (1).png" style="margin-top: 250px; margin-left: -221px; position: absolute; width: 45px" />
+
+            <input type="submit" value="Войти" class="btn" style=" margin-top: 330px;
+                                                                position: absolute;
+                                                                margin-left: -224px;
+                                                                color: white;
+                                                                background-color: black;
+                                                                padding-left: 115px;
+                                                                padding-right: 115px;" />
+
+            <p style="margin-top: 260px; position: absolute; font-size: 13px; margin-left: 550px;">Нет акканут? <a asp-area="" asp-controller="Account" asp-action="Registr" style="color:blue; font-size: 13px; ">Зарегистриоваться</a> </p>
+        </div>
+
+        <div asp-validation-summary="ModelOnly" style="     position: absolute;
+             top: 729px;
+             left: 622px;
+             color: red;"></div>
+
+        <div>
+            <img src="~/Image/РамкаДляРегистрации.png" style="width: 1100px; height: 570px ; margin-top:-70px;" />
+        </div>
+    </div>
+</form>

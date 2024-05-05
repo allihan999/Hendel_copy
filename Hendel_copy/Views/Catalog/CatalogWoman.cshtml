@@ -1,0 +1,64 @@
+﻿@using Hendel.DAL_copy;
+@model IEnumerable<Catalog>
+@{
+    ViewData["Title"] = "View";
+}
+
+<div>
+    <p style="width: 1519px; border: 1px solid #D9D9D9; margin-left: -112px; margin-bottom: 30px"></p>
+    <img style="margin-left: 540px; width: 251px; margin-bottom: 20px; position:absolute" src="~/Image/Слова/Big Bang.png" />
+</div>
+
+<div style="">
+    <a hidden="@(User.Identity.IsAuthenticated ? false : true)" class="WomanCatalog" asp-area="" asp-action="Catalog" asp-controller="Catalog">Мужские часы</a>
+</div>
+
+
+<div style="margin-top: 55px">
+    <div style="display: flex; border: none; width: 1407px">
+
+        <div style="background: white; width: 1519px; height: 100%; display: flex; flex-wrap: wrap; margin-left: -112px">
+            @if (Model.Count() < 1)
+            {
+                <h4 class="display-4 text-center">Товар скоро будет</h4>
+            }
+
+            @foreach (var item in Model)
+            {
+                <div class="coll" style="text-align: center; margin-top: 0px; border: 2px solid #D9D9D9; width: 379.75px; height: 575px">
+                    <div class="col" border: 1px solid black style="height: 570px">
+                        @if (item.Image != null)
+                        {
+                            <img class="img" style="text-align: center; margin-left: auto; width: 250px; margin-right: auto;" src="data:image/jpeg;base64,@(Convert.ToBase64String(item.Image))" />
+                        }
+                        <p style="font-weight: lighter">Big Bang </p>
+                        <h4 class="h4" style="margin-left: auto; margin-right:auto; margin-top:15px; font-size: 17px">@item.Name </h4>
+                        <p style="border: 1px solid red; width: 40px; height: 2px; background-color: red; margin-top: -6px; margin-left: 167px; "></p>
+                        <div>
+
+                            <a hidden="@(User.IsInRole($"{Role.Пользователь.ToString()}") ? false : true)" class="buttona" asp-controller="Catalog" asp-action="AddFavorite" asp-route-id="@item.Id" style="    color: black;
+                                                                                                                text-decoration: underline;
+                                                                                                                position: absolute;
+                                                                                                                margin-top: 15px;
+                                                                                                                margin-left: -130px;
+                                                                                                                border: 2px solid black;
+                                                                                                                padding-left: 100px;
+                                                                                                                padding-right: 100px;
+                                                                                                                padding-bottom: 5px;
+                                                                                                                padding-top: 5px;"> Корзина </a>
+
+                            <a hidden="@(User.IsInRole($"{Role.Администратор.ToString()}") ? false : true)" class="buttona" style="margin-bottom: 7px" asp-controller="Catalog" asp-action="AddArchive" asp-route-id="@item.Id">Добавить в Архив</a>
+                            <a hidden="@(User.IsInRole($"{Role.Администратор.ToString()}") ? false : true)" class="buttona2" asp-area="" asp-action="Edit" asp-controller="Catalog" asp-route-id="@item.Id">Редактировать</a>
+                            <a hidden="@(User.IsInRole($"{Role.Администратор.ToString()}") ? false : true)" class="buttona1" asp-area="" asp-action="DeleteWatchsCatalog" asp-controller="Catalog" asp-route-id="@item.Id">Удалить</a>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="text-center" style="margin-left: -10px">
+        <a style="visibility: visible; margin-top: 50px" class="btn btn-outline-dark" hidden="@(User.IsInRole($"{Role.Администратор.ToString()}") ? false : true)" asp-area="" asp-action="Create" asp-controller="Catalog">Добавить</a>
+    </div>
+</div>
