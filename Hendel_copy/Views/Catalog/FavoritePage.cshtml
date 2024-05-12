@@ -52,7 +52,7 @@
 
                 </div>
 
-                <form method="post" asp-controller="Catalog" asp-action="CollWatch">
+                <form method="post" asp-controller="Catalog" asp-action="CollWatchs">
 
                     <input type="number" id="collWatch" name="collWatch" placeholder="Количесвто шт." asp-for="@item.Amount" asp-for="collWatch" style=" width: 250px;
                        border: none;
@@ -79,34 +79,15 @@
                                                 margin-top: 90px;
                                                 position: absolute;
                                                 margin-left: -179px;"/>
-                </form>
 
-                @* <form method="post" asp-controller="Catalog" asp-action="IsModelsWindowMethod">
-                    
-                    <input type="submit" id="isModelWindow" name="isModelWindow" placeholder="Отменить" style="text-decoration: none;
-                                                                            color: red;
-                                                                            margin-bottom: 0px;
-                                                                            padding-left: 50px;
-                                                                            padding-right: 50px;
-                                                                            padding-top: 3.5px;
-                                                                            padding-bottom: 3.5px;
-                                                                            margin-top: 96px;
-                                                                            position: absolute;
-                                                                            margin-left: -85px;
-                                                                            font-size: 14px;
-                                                                            font-weight: bold">
-
-                    <input style="visibility: collapse" asp-for="@item.Id" id="BoolWatch_id" name="BoolWatch_id" />
-                </form> *@
-
-               @*  @if(@item.IsModelWindow == true)
-                {
-                    <div style="background: black;">
-                        
+                    <div asp-validation-summary="ModelOnly" style="position: absolute;
+                                                                     top: 729px;
+                                                                     left: 622px;
+                                                                     color: red;">
                     </div>
-                } *@
-
+                </form>              
             </div>
+            
         }
     </div>
 </div>

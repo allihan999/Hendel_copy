@@ -1,16 +1,20 @@
-﻿@model Hendel.DAL_copy.Models.RegistrModels
-
-@{
+﻿@{
     ViewData["Title"] = "Регистрация";
 }
 
+@model RegistrModelsProject
 
-<form asp-action="Registr" asp-controller="Account" asp-anti-forgery="true">
+<form asp-action="Registr" asp-controller="Account" asp-anti-forgery="true" enctype="multipart/form-data"> 
+    <div style="display: flex">
+        <img style="width: 200px; margin: auto" src="~/Image/Group 34.png" />
+    </div>
+
     <div class="text-center">
-        <div>
-            <img style="width: 200px; margin-left: 2px" src="~/Image/Group 34.png" />
+        <div style=" position: absolute; margin-top: -80px; margin-left: 750px">
 
-            <input asp-for=Name type="text" style=" width: 250px;
+            <div>
+                <div>
+                    <input asp-for=Name type="text" style=" width: 250px;
                        border: none;
                        border-bottom: 2px solid black;
                        position: absolute;
@@ -19,11 +23,16 @@
                        background-color: transparent;
                        color: inherit;
                        outline: none;" />
-            <img src="~/Image/Слова/имя (1).png" style="margin-top: 170px; margin-left: -221px; position: absolute; width: 25px" />
+                    <img src="~/Image/Слова/имя (1).png" style="margin-top: 170px; margin-left: -221px; position: absolute; width: 25px" />
+
+                </div>
+                <span asp-validation-for="Name" style="color:red; width: 250px; position: absolute; margin-top: 190px;margin-left: 60px;" />
+            </div>
 
 
-
-            <input asp-for=Surname type="text" style=" width: 250px;
+           <div>
+               <div>
+                    <input asp-for=Surname type="text" style=" width: 250px;
                        border: none;
                        border-bottom: 2px solid black;
                        position: absolute;
@@ -32,11 +41,16 @@
                        background-color: transparent;
                        color: inherit;
                        outline: none;" />
-            <img src="~/Image/Слова/фамилия (1).png" style="margin-top: 240px; margin-left: -222px; position: absolute; width: 60px" />
+                    <img src="~/Image/Слова/фамилия (1).png" style="margin-top: 240px; margin-left: -222px; position: absolute; width: 60px" />
 
+                </div>
+                <span asp-validation-for="Surname" style="color:red;width: 250px;position: absolute; margin-top: 260px;margin-left: 60px;" />
 
+           </div>
 
-            <input asp-for=Email type="email"  style=" width: 250px;
+            <div>
+                <div>
+                    <input asp-for=Email type="email" style=" width: 250px;
                        border: none;
                        border-bottom: 2px solid black;
                        position: absolute;
@@ -45,11 +59,16 @@
                        background-color: transparent;
                        color: inherit;
                        outline: none;" />
-            <img src="~/Image/Слова/почта (1).png" style="margin-top: 310px; margin-left: -221px; position: absolute; width: 35px" />
+                    <img src="~/Image/Слова/почта (1).png" style="margin-top: 310px; margin-left: -221px; position: absolute; width: 35px" />
 
+                </div>
+                <span asp-validation-for="Email" style="color:red;width: 250px;position: absolute; margin-top: 330px;margin-left: 60px;" />
 
-
-            <input asp-for=Password type="password" style=" width: 250px;
+            </div>
+          
+            <div>
+                <div>
+                    <input asp-for=Password type="password" style=" width: 250px;
                        border: none;
                        border-bottom: 2px solid black;
                        position: absolute;
@@ -58,36 +77,48 @@
                        background-color: transparent;
                        color: inherit;
                        outline: none;" />
-            <img src="~/Image/Слова/пароль (1).png" style="margin-top: 380px; margin-left: -221px; position: absolute; width: 45px" />
+                    <img src="~/Image/Слова/пароль (1).png" style="margin-top: 380px; margin-left: -221px; position: absolute; width: 45px" />
+
+                </div>
+                <span asp-validation-for="Password" style="color:red;width: 250px; position: absolute; margin-top: 400px;margin-left: 60px;" />
+
+            </div>
 
 
+           <div>
+                 <div>
+                     <input asp-for=DoublePassword type="password" style=" width: 250px;
+                    border: none;
+                    border-bottom: 2px solid black;
+                    position: absolute;
+                    margin-top: 470px;
+                    margin-left: -222px;
+                    background-color: transparent;
+                    color: inherit;
+                    outline: none;" />
+                     <img src="~/Image/Слова/повторите пароль (1).png" style="margin-top: 450px; margin-left: -221px; position: absolute; width: 115px" />
 
-            <input asp-for=DoublePassword type="password" style=" width: 250px;
-                       border: none;
-                       border-bottom: 2px solid black;
-                       position: absolute;
-                       margin-top: 470px;
-                       margin-left: -222px;
-                       background-color: transparent;
-                       color: inherit;
-                       outline: none;" />
-            <img src="~/Image/Слова/повторите пароль (1).png" style="margin-top: 450px; margin-left: -221px; position: absolute; width: 115px" />
+                 </div>
+                <span asp-validation-for="DoublePassword" style="color:red;width: 250px; position: absolute; margin-top: 470px;margin-left: 60px;" />
+           </div>
+        </div>
 
-            <input type="submit"  value="Ok" class="btn" style=" margin-top: 522px;
+        <div>
+            <input type="submit"  value="Ok" class="btn" style=" margin-top: 495px;
                                                                 position: absolute;
-                                                                margin-left: -224px;
+                                                                margin-left: -115px;
                                                                 color: white;
                                                                 background-color: black;
                                                                 padding-left: 115px;
                                                                 padding-right: 115px;" />
 
             <input style="margin: 0;
-                      font-family: inherit;
-                      font-size: inherit;
-                      line-height: inherit;
-                      margin-top: 570px;
-                      position: absolute;
-                      margin-left: -222px;" type="checkbox" />
+                   font-family: inherit;
+                   font-size: inherit;
+                   line-height: inherit;
+                   margin-top: 430px;
+                   position: absolute;
+                   margin-left: -118px;" type="checkbox" />
 
             <p style="margin-bottom: 1rem;
                   margin-top: 425px;
@@ -101,14 +132,18 @@
             <p style="margin-top: 445px; position: absolute; font-size: 13px; margin-left: 550px;">Уже есть акканут? <a asp-area="" asp-controller="Account" asp-action="Input" style="color:blue; font-size: 13px; ">Авторизоваться</a> </p>
         </div>
 
-        <div asp-validation-summary="ModelOnly" style="     position: absolute;
+        <div asp-validation-summary="ModelOnly" style="position: absolute;
              top: 729px;
              left: 622px;
-             color: red;"></div>
+             color: red;">
+         </div>
 
-        <div>
-            <img src="~/Image/РамкаДляРегистрации.png" style="width: 1100px; height: 570px ; margin-top:-70px;" />
+        <div style="display: flex; margin-top: -70px">
+            <img src="~/Image/РамкаДляРегистрации.png" style="width: 1100px; height: 570px ; margin: auto;" />
         </div>
     </div>
 
 </form>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>

@@ -15,10 +15,12 @@ namespace Hendel.DAL_copy
         public DbSet<Watch> Watches { get; set; }
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<BuyProducts> BuyProductsTable { get; set; }
+
         public MainContext(DbContextOptions<MainContext> options) : base(options) 
         {
-            Database.EnsureCreated();
             //Database.EnsureDeleted();
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

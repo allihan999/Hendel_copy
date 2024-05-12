@@ -9,16 +9,24 @@ using System.Drawing;
 using Microsoft.CodeAnalysis;
 using System.Linq;
 using Hendel_copy.Models;
+using Azure.Messaging;
+using Hendel.DAL_copy.Models;
+using Microsoft.Extensions.Logging;
+using System.Net.Mail;
+using System.Net;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Hendel_copy.Controllers
 {
     public class CatalogController : Controller
     {
         public readonly MainContext _mainContext;
+        private readonly ILogger<HomeController> logger;
 
-        public CatalogController(MainContext mainContext)
+        public CatalogController(MainContext mainContext, ILogger<HomeController> logger)
         {
             _mainContext = mainContext;
+            this.logger = logger;
         }
 
         public IActionResult History()
@@ -53,26 +61,51 @@ namespace Hendel_copy.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CatalogViewModels news)
         {
-            Catalog n = new Catalog { Name = news.Name, Description = news.Description, Amount = news.Amount, Price = news.Price, WhichCatalog = news.WhichCatalog };
-            if (news.Image != null)
+            CatalogViewModels models = new CatalogViewModels();
+            List<CatalogViewModels> list = new List<CatalogViewModels>();
+            list.Clear();
+            list.Add(news);
+
+            foreach (var item in list.ToList())
             {
-                byte[] imageData = null;
-                // считываем переданный файл в массив байтов
-                using (var binaryReader = new BinaryReader(news.Image.OpenReadStream()))
+                Catalog n = new Catalog { Name = news.Name, Description = news.Description, Amount = news.Amount, Price = news.Price, WhichCatalog = news.WhichCatalog };
+                
+                if (item.Image == null)
                 {
-                    imageData = binaryReader.ReadBytes((int)news.Image.Length);
+                    ModelState.AddModelError("", "Выберите картинку (.png, .jpg, .jpeg)");
                 }
-                n.Image = imageData;
-            }
+                else if (item.Image.FileName.Contains("png") == false && item.Image.FileName.Contains("jpg") == false && item.Image.FileName.Contains("jpeg") == false)
+                {
+                    list.Clear();
+                    ModelState.AddModelError("", "Выберите картинку (.png, .jpg, .jpeg)");                  
+                }
+                else
+                {
+                    if (news.Image != null)
+                    {
+                        byte[] imageData = null;
+                        // считываем переданный файл в массив байтов
+                        using (var binaryReader = new BinaryReader(news.Image.OpenReadStream()))
+                        {
+                            imageData = binaryReader.ReadBytes((int)news.Image.Length);
+                        }
+                        n.Image = imageData;
+                    }
 
-            _mainContext.Catalogs.Add(n);
-            await _mainContext.SaveChangesAsync();
+                    _mainContext.Catalogs.Add(n);
+                    await _mainContext.SaveChangesAsync();
 
-            if (n.WhichCatalog == "Женские")
-            {
-                return RedirectToAction("CatalogWoman", "Catalog");
+                    if (n.WhichCatalog == "Женские")
+                    {
+                        list.Clear();
+                        return RedirectToAction("CatalogWoman", "Catalog");
+                    }
+                    list.Clear();
+                    return RedirectToAction("Catalog");
+                }
             }
-            return RedirectToAction("Catalog");
+            return View();
+
         }
 
         public IActionResult FavoritePage()
@@ -345,119 +378,205 @@ namespace Hendel_copy.Controllers
             return View(_mainContext.MyKorzinas.OrderBy(x => x.Id).Include(t => t.KorzinaWatches).OrderBy(x => x.Id).ToList());
         }
 
-        public IActionResult BuyCompete()
+        public int IdUser { get; set; }
+      
+        [HttpPost]        
+        public async Task<IActionResult> CollWatchs(int collWatch, int collWatch_id)
         {
-           return View();
+            Watch watch = new Watch();
+            MyKorzina myKorzina = new MyKorzina();
+
+            //Наш пользователь
+            var user = _mainContext.Users.FirstOrDefault(t => t.Id == _mainContext.Favorites.Find(collWatch_id).UserId);
+            //Нашли товар который выбрали
+            var cataloGg = _mainContext.Favorites.Find(collWatch_id).ProductId;
+            var catalogs = _mainContext.Catalogs.FirstOrDefault(x => x.Id == cataloGg);
+
+            //Нужно передать товар в BuyProduct
+            BuyProducts buyProducts = new BuyProducts();
+
+
+            if (collWatch > catalogs.Amount)
+            {
+                return RedirectToAction("FavoritePage", "Catalog");
+            }
+            else
+            {
+                buyProducts.UserId = user.Id;
+                buyProducts.ProductId = cataloGg;
+                buyProducts.Description = catalogs.Description;
+                buyProducts.Name = catalogs.Name;
+                buyProducts.Image = catalogs.Image;
+
+                buyProducts.Amount = catalogs.Amount;
+                buyProducts.WhichCatalog = catalogs.WhichCatalog;
+                buyProducts.Price = catalogs.Price;
+
+                buyProducts.CollWatch = collWatch;
+                buyProducts.CollPrice = catalogs.Price * collWatch;
+
+                if (user.Name == User.Identity.Name)
+                {
+                    var product = _mainContext.BuyProductsTable.Where(x => x.UserId == user.Id).ToList();
+                    if (product.Count >= 1)
+                    {
+                        return RedirectToAction("Catalog", "Catalog");
+                    }
+                }
+
+                _mainContext.BuyProductsTable.Add(buyProducts);
+                await _mainContext.SaveChangesAsync();
+                return RedirectToAction("BuyProduct", "Account");
+            }
+            return View();
+
         }
 
-        public IActionResult BuyProduct()
+        public async Task<IActionResult> ProductBuyUser()
+        {
+            Watch watch = new Watch();
+            MyKorzina myKorzina = new MyKorzina();
+            BuyProducts buyProduct = new BuyProducts();
+
+
+
+            var userId = _mainContext.Users.FirstOrDefault(x => x.Name == User.Identity.Name).Id;
+            var user = _mainContext.Users.Find(userId);
+
+            buyProduct = _mainContext.BuyProductsTable.FirstOrDefault(x => x.UserId == _mainContext.Users.Find(userId).Id);
+
+            var catalogs = _mainContext.Catalogs.Where(x => x.Id == buyProduct.ProductId).ToList();
+
+            var catalogId = _mainContext.Catalogs.FirstOrDefault(x => x.Id == buyProduct.ProductId).Id;
+
+            var result = _mainContext.BuyProductsTable.FirstOrDefault(x => x.UserId == user.Id && x.ProductId == buyProduct.ProductId);
+            if (catalogs != null)
+            {
+                foreach (var catalog in catalogs)
+                {
+                    int colAmWa = catalog.Amount;
+                    catalog.Amount -= buyProduct.CollWatch;
+
+                    if (catalog.Amount < 0)
+                    {
+                        _mainContext.BuyProductsTable.Remove(result);
+                        catalog.Amount = colAmWa;
+                        await _mainContext.SaveChangesAsync();
+                    }
+                    _mainContext.Catalogs.Update(catalog);
+
+                    Archive archive = new Archive();
+                    if (catalog.Amount < 1)
+                    {
+                        archive.Name = catalog.Name;
+                        archive.Description = catalog.Description;
+                        archive.Price = catalog.Price;
+                        archive.Amount = catalog.Amount;
+                        archive.Image = catalog.Image;
+                        archive.WatchCategory = catalog.WhichCatalog;
+
+                        archive.AdminInputClassId = 1;
+                        archive.ProductId = catalog.Id;
+
+                        _mainContext.Archives.Add(archive);
+                        _mainContext.Catalogs.Remove(catalog);
+
+                    }
+                }
+
+                myKorzina.UserId = _mainContext.Users.FirstOrDefault(x => x.Name == User.Identity.Name).Id;
+                myKorzina.WatchId = _mainContext.Favorites.FirstOrDefault(x => x.ProductId == buyProduct.ProductId).Id;
+
+                if (user != null)
+                {
+                    myKorzina.UserName = user.Name;
+                    myKorzina.Surname = user.Surname;
+                    myKorzina.Email = user.Email;
+                    myKorzina.Password = user.Password;
+                    myKorzina.DoublePassword = user.DoublePassword;
+                    myKorzina.Role = user.Role;
+                    myKorzina.AmountBuyUser += 1;
+
+                    myKorzina.AmountBuyWatch = buyProduct.CollWatch;
+                    myKorzina.AllSalePrice = buyProduct.CollPrice;
+
+                    _mainContext.MyKorzinas.Add(myKorzina);
+                    await _mainContext.SaveChangesAsync();
+
+                    //----------------------------------------------------------------
+
+                    watch.UserId = myKorzina.UserId;
+                    watch.MyKorzinaId = myKorzina.Id;
+
+                    watch.Name = _mainContext.Favorites.FirstOrDefault(x => x.ProductId == buyProduct.ProductId).Name;
+                    watch.Image = _mainContext.Favorites.FirstOrDefault(x => x.ProductId == buyProduct.ProductId).Image;
+                    watch.Description = _mainContext.Favorites.FirstOrDefault(x => x.ProductId == buyProduct.ProductId).Description;
+                    watch.Price = _mainContext.Favorites.FirstOrDefault(x => x.ProductId == buyProduct.ProductId).Price;
+                    watch.Amount = _mainContext.Favorites.FirstOrDefault(x => x.ProductId == buyProduct.ProductId).Amount;
+
+                    watch.AmountBuyWatch = buyProduct.CollWatch;
+                    watch.AllSalePrice = buyProduct.CollPrice;
+
+                    _mainContext.Watches.Add(watch);
+                    await _mainContext.SaveChangesAsync();                   
+                }
+
+                //-----------------Уведомление_на_почту-----------------
+                //try
+                //{
+                //    MailMessage message = new MailMessage();
+                //    message.IsBodyHtml = true;
+                //    message.From = new MailAddress("alikhan.iskhadzhiyev@bk.ru", "Hendel");
+                //    message.To.Add($"{user.Email}");
+                //    message.Subject = "Сообщение от Hendel";
+                //    message.Body = "<div>Спасибо за покупку!<div>";
+
+                //    //message.Attachments.Add(new Attachment("путь к файлу"));
+
+                //    using (SmtpClient client = new SmtpClient("smpt.mail.ru"))
+                //    {
+                //        client.Credentials = new NetworkCredential("alikhan.iskhadzhiyev@bk.ru", "YxuTJTfqXSBten7UNRaM\r\n");
+                //        client.Port = 587;
+                //        client.EnableSsl = true;
+                //        client.Send(message);
+
+                //        logger.LogInformation("Сообщение отправлено успешно!");
+                //    }
+                //}
+                //catch (Exception e)
+                //{
+                //    logger.LogError(e.GetBaseException().Message);
+                //}
+            }
+
+
+            if (buyProduct.ProductId != null)
+            {
+                var favoriteId = _mainContext.Favorites.FirstOrDefault(x => x.ProductId == buyProduct.ProductId).ProductId;
+
+                Favorite favorite = _mainContext.Favorites.FirstOrDefault(x => x.ProductId == buyProduct.ProductId);
+                BuyProducts buyProductsss = _mainContext.BuyProductsTable.FirstOrDefault(x => x.ProductId == buyProduct.ProductId);
+                if (favorite != null)
+                {
+                    _mainContext.Favorites.Remove(favorite);
+                    if(buyProductsss != null)
+                    {
+                        _mainContext.BuyProductsTable.Remove(buyProductsss);
+                    }
+                    await _mainContext.SaveChangesAsync();
+                    return RedirectToAction("BuyCompete", "Catalog");
+                }
+                return RedirectToAction("Error");
+            }
+            return View();
+        }
+
+        public IActionResult BuyCompete()
         {
             return View();
         }
 
-
-      
-        [HttpPost]        
-        public async Task<IActionResult> CollWatch(int collWatch, int collWatch_id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                Watch watch = new Watch();
-                MyKorzina myKorzina = new MyKorzina();
-
-                var user = _mainContext.Users.FirstOrDefault(t => t.Id == _mainContext.Favorites.Find(collWatch_id).UserId);
-                //var catalogs = _mainContext.Catalogs.Where(x => x.Name == _mainContext.Favorites.Find(id).Name && x.Description == _mainContext.Favorites.Find(id).Description && x.Image == _mainContext.Favorites.Find(id).Image && x.Price == _mainContext.Favorites.Find(id).Price && x.Amount == _mainContext.Favorites.Find(id).Amount).ToList();
-
-                var cataloGg = _mainContext.Favorites.Find(collWatch_id).ProductId;
-
-                var catalogs = _mainContext.Catalogs.Where(x => x.Id == cataloGg).ToList();
-
-
-                if (catalogs != null)
-                {
-                    myKorzina.UserId = _mainContext.Users.FirstOrDefault(x => x.Name == User.Identity.Name).Id;
-                    myKorzina.WatchId = _mainContext.Favorites.Find(collWatch_id).Id;
-
-                    if (user != null)
-                    {
-                        myKorzina.UserName = user.Name;
-                        myKorzina.Surname = user.Surname;
-                        myKorzina.Email = user.Email;
-                        myKorzina.Password = user.Password;
-                        myKorzina.DoublePassword = user.DoublePassword;
-                        myKorzina.Role = user.Role;
-                        myKorzina.AmountBuyUser += 1;
-
-                        _mainContext.MyKorzinas.Add(myKorzina);
-                        await _mainContext.SaveChangesAsync();
-
-                        //----------------------------------------------------------------
-
-                        watch.UserId = myKorzina.UserId;
-                        watch.MyKorzinaId = myKorzina.Id;
-
-                        watch.Name = _mainContext.Favorites.Find(collWatch_id).Name;
-                        watch.Image = _mainContext.Favorites.Find(collWatch_id).Image;
-                        watch.Description = _mainContext.Favorites.Find(collWatch_id).Description;
-                        watch.Price = _mainContext.Favorites.Find(collWatch_id).Price;
-                        watch.Amount = _mainContext.Favorites.Find(collWatch_id).Amount;
-
-                        _mainContext.Watches.Add(watch);
-                        await _mainContext.SaveChangesAsync();
-
-
-
-                        foreach (var catalog in catalogs)
-                        {
-                            int colAmWa = catalog.Amount;
-                            catalog.Amount -= collWatch;
-                            
-                            if (catalog.Amount < 0)
-                            {
-                                catalog.Amount = colAmWa;
-                                return RedirectToAction("FavoritePage", "Catalog");
-                            }
-                            _mainContext.Catalogs.Update(catalog);
-
-                            Archive archive = new Archive();
-                            if (catalog.Amount < 1)
-                            {
-                                archive.Name = catalog.Name;
-                                archive.Description = catalog.Description;
-                                archive.Price = catalog.Price;
-                                archive.Amount = catalog.Amount;
-                                archive.Image = catalog.Image;
-                                archive.WatchCategory = catalog.WhichCatalog;
-
-                                archive.AdminInputClassId = 1;
-                                archive.ProductId = catalog.Id;
-
-                                _mainContext.Archives.Add(archive);
-                                _mainContext.Catalogs.Remove(catalog);
-
-                            }
-                        }
-                    }
-                }
-
-
-                if (collWatch_id != null)
-                {
-                    Favorite favorite = await _mainContext.Favorites.FindAsync(collWatch_id);
-                    if (favorite != null)
-                    {
-                        _mainContext.Favorites.Remove(favorite);
-                        await _mainContext.SaveChangesAsync();
-                        return RedirectToAction("BuyProduct", "Catalog");
-                    }
-                    return RedirectToAction("Error");
-                }
-
-                return RedirectToAction("Catalog", "Catalog");
-            }
-            else
-                return RedirectToAction("Input", "Account");
-        }
+       
 
         public async Task<IActionResult> IsModelsWindowMethod(bool isModelWindow, int BoolWatch_id)
         {
@@ -487,12 +606,6 @@ namespace Hendel_copy.Controllers
             else
                 return RedirectToAction("Error");
         }
-
-        //public IActionResult SendEmailDefault(int? id)
-        //{
-        //    _service.SendEmailDefault(id);
-        //    return RedirectToAction("Index");
-        //}
 
     }
 }

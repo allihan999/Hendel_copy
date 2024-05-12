@@ -55,6 +55,7 @@
                                                                                                                 padding-bottom: 5px;
                                                                                                                 padding-top: 5px;"> Корзина </a>
 
+                            <p hidden="@(User.IsInRole($"{Role.Администратор.ToString()}") ? false : true)" style="margin-bottom: 2px;">В наличии: @item.Amount </p>
                             <a hidden="@(User.IsInRole($"{Role.Администратор.ToString()}") ? false : true)" class="buttona" style="margin-bottom: 7px" asp-controller="Catalog" asp-action="AddArchive" asp-route-id="@item.Id">Добавить в Архив</a>
                             <a hidden="@(User.IsInRole($"{Role.Администратор.ToString()}") ? false : true)" class="buttona2" asp-area="" asp-action="Edit" asp-controller="Catalog" asp-route-id="@item.Id">Редактировать</a>
                             <a hidden="@(User.IsInRole($"{Role.Администратор.ToString()}") ? false : true)" class="buttona1" asp-area="" asp-action="DeleteWatchsCatalog" asp-controller="Catalog" asp-route-id="@item.Id">Удалить</a>

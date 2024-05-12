@@ -1,0 +1,100 @@
+﻿@using Hendel.DAL_copy;
+@model IEnumerable<BuyProducts>;
+
+<div style="position: absolute; margin-top: 158px; margin-left: 100px;">
+    <div style="display: flex; flex-direction: column; margin-left: 100px; width: 437px">
+        @foreach (var item in Model)
+        {
+        <div style="border: 1px solid black">
+            <div>
+                @if (item.Image != null)
+                {
+                    <img class="img" style="text-align: center; margin-left: auto; width: 200px; margin-right: auto;" src="data:image/jpeg;base64,@(Convert.ToBase64String(item.Image))" />
+                }
+            </div>
+
+            <div style="position: absolute; margin-top: -210px; margin-left: 225px; width: 200px">
+                <p> <a style="font-weight: bold">Название товара:</a> @item.Name </p>
+                <p> <a style="font-weight: bold">Цвет:</a> @item.Description </p>
+                <p> <a style="font-weight: bold">Цена:</a> @item.CollPrice </p>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+
+<div class="text-center" >
+    <div>
+        <img style="width: 200px; margin-left: 10px" src="~/Image/Оформление_Заказа.png" />
+       
+        <div>
+            <div style="position: absolute; margin-left: 750px; margin-top: 110px;">
+                <div>
+                    <select style="width: 250px; margin-left: -26px;">
+                        <option value="value1">Сбербанк</option>
+                        <option value="value2">Тинкофф</option>
+                        <option value="value3">Альфа-банк</option>
+                    </select>
+                </div>
+
+                <div>
+                    <input type="number" placeholder="Номер карты" style=" width: 250px;
+                       border: none;
+                       border-bottom: 2px solid black;
+                       position: absolute;
+                       background-color: transparent;
+                       color: inherit;
+                       outline: none;
+                       margin-top: 20px;
+                       margin-left: -136px;" />
+                </div>
+
+                <div>
+                    <input type="number" placeholder="Пин-код" style=" width: 250px;
+                       border: none;
+                       border-bottom: 2px solid black;
+                       position: absolute;
+                       background-color: transparent;
+                       color: inherit;
+                       outline: none;
+                       margin-left: -136px;
+                       margin-top: 70px;" />
+                </div>
+
+
+
+                <a asp-area="" asp-action="ProductBuyUser" asp-controller="Catalog" style="margin-top: 127px;
+                                                                                   margin-left: -80px;
+                                                                                   position: absolute;
+                                                                                   text-decoration: none;
+                                                                                   background: black;
+                                                                                   color: white;
+                                                                                   padding-left: 51px;
+                                                                                   padding-right: 50px;
+                                                                                   padding-top: 5px;
+                                                                                   padding-bottom: 5px;">купить</a>
+
+                @foreach (var item in Model)
+                {
+                    <a asp-area="" asp-action="DeleteProductZakaz" asp-controller="Account" asp-route-id="@item.Id"
+                                                                                   style="margin-top: 220px;
+                                                                                   margin-left: -565px;
+                                                                                   position: absolute;
+                                                                                   text-decoration: none;
+                                                                                   font-weight: 700;
+                                                                                   font-size: 15px;
+                                                                                   color: red;
+                                                                                   padding-left: 51px;
+                                                                                   padding-right: 50px;
+                                                                                   padding-top: 5px;
+                                                                                   padding-bottom: 5px;">Очитить козрзину</a>
+
+                }
+            </div>
+        </div>       
+    </div>
+
+    <div style="display: flex; margin-top: -60px">
+        <img src="~/Image/РамкаДляРегистрации.png" style="width: 1100px; height: 570px ; margin: auto;" />
+    </div>
+</div>

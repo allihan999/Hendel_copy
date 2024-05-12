@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Azure.Core.Pipeline;
 using Hendel.DAL_copy.Models;
+using Hendel_copy.Models;
 
 namespace Hendel_copy.Controllers
 {
@@ -19,6 +20,33 @@ namespace Hendel_copy.Controllers
             _mainContext = mainContext;
         }
 
+        //[AcceptVerbs("Get", "Post")]
+        //public IActionResult CheckEmail(string email)
+        //{
+        //    if (email == "admin@mail.ru" || email == "aaa@gmail.com")
+        //        return Json(false);
+        //    return Json(true);
+        //}
+
+        public IActionResult BuyProduct()
+        {
+            var user = _mainContext.Users.FirstOrDefault(x => x.Name == User.Identity.Name);
+            return View(_mainContext.BuyProductsTable.Where(x => x.UserId == user.Id).ToList());
+        }
+
+        //Дописать код
+        public async Task<IActionResult> DeleteProductZakaz(int id)
+        {
+            BuyProducts buyProductsss = _mainContext.BuyProductsTable.FirstOrDefault(x => x.Id == id);
+            if (buyProductsss != null)
+            {
+                _mainContext.BuyProductsTable.Remove(buyProductsss);
+                await _mainContext.SaveChangesAsync();
+                return RedirectToAction("Catalog", "Catalog");
+            }
+            return View();  
+        }
+
         [HttpGet]
         public IActionResult Registr()
         {   
@@ -27,8 +55,9 @@ namespace Hendel_copy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registr(RegistrModels models)
+        public async Task<IActionResult> Registr([FromForm] RegistrModelsProject models)
         {
+            
             User user = await _mainContext.Users.FirstOrDefaultAsync(u => u.Name == models.Name);
             if(user == null)
             {
@@ -66,8 +95,9 @@ namespace Hendel_copy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Input(LoginModels models) 
+        public async Task<IActionResult> Input(LoginModelsClass models) 
         {
+
             User user = await _mainContext.Users.FirstOrDefaultAsync(u => u.Name == models.Name && u.Password == models.Password);
             if(user != null)
             {

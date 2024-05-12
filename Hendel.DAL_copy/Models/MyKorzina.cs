@@ -21,6 +21,9 @@ namespace Hendel.DAL_copy.Models
         public string DoublePassword { get; set; }
         public string Role { get; set; }
 
+        public int AmountBuyWatch { get; set; }
+        public int AllSalePrice { get; set; }
+
         public int AmountBuyUser { get; set; }
     }
 }

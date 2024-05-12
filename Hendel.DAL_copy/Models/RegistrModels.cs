@@ -18,7 +18,7 @@ namespace Hendel.DAL_copy.Models
         [Required(ErrorMessage = "Не указана фамилия")]
         public string Surname { get; set; }
 
-        [Required(ErrorMessage = "Не указано имя")]
+        [Required(ErrorMessage = "Не указано Почта")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Длина строки должна быть от 3 до 50 символов")]
         public string Email { get; set; }
 
