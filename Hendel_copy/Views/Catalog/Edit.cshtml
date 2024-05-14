@@ -1,33 +1,40 @@
-﻿@model Hendel_copy.Models.WatchEditViewModels;
+﻿@using Hendel_copy.Models;
+@model WatchEditViewModels;
 
 <form asp-area="" asp-action="Edit" asp-controller="Catalog" enctype="multipart/form-data">
     <div class="text-center">
         <label asp-for="Image" class="control-label">Фото</label>
         <p> <input name="Image" type="file" class="form-control" /> </p>
+        <span asp-validation-for="Image" style="color:red;width: 250px;" />
     </div>
 
     <div class="form-group">
         <label asp-for="Name" class="control-label">Название</label>
         <input type="text" asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" style="color:red;width: 250px; " />
+
     </div>
 
     <div class="form-group">
         <label asp-for="Description" class="control-label">Описание</label>
         <input type="text" asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" style="color:red;width: 250px;" />
     </div>
 
     <div class="form-group">
-        <label asp-for="Amount" class="control-label">В наличии / не в начилии</label>
+        <label asp-for="Amount" class="control-label">В наличии шт. ?</label>
         <input type="text" asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" style="color:red;width: 250px; " />
     </div>
 
     <div class="form-group">
         <label asp-for="Price" class="control-label">Цена</label>
         <input type="text" asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" style="color:red;width: 250px; " />
     </div>
 
     <div class="form-group">
-        <label asp-for="WhichCatalog" class="control-label">Мужские/Женские</label>
+        <label asp-for="WhichCatalog" class="control-label">В какой каталог: </label>
         <select asp-for="WhichCatalog">
             <option value="Мужские">Мужские</option>
             <option value="Женские">Женские</option>
@@ -38,4 +45,13 @@
         <input type="submit" value="Отправить" class="btn btn-info" />
     </div>
 
+    <div asp-validation-summary="ModelOnly" style="position: absolute;
+             top: 729px;
+             left: 622px;
+             color: red;">
+    </div>
+
 </form>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>

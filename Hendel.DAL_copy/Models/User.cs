@@ -16,5 +16,8 @@ namespace Hendel.DAL_copy.Models
         public string Password { get; set; }
         public string DoublePassword { get; set; }
         public string Role { get; set; }
+
+        public int UserNumberOrder { get; set; }
+
     }
 }

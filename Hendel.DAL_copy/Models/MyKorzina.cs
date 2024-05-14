@@ -24,6 +24,7 @@ namespace Hendel.DAL_copy.Models
         public int AmountBuyWatch { get; set; }
         public int AllSalePrice { get; set; }
 
+        public int UserNumberOrder { get; set; }
         public int AmountBuyUser { get; set; }
     }
 }

@@ -1,12 +1,12 @@
 ﻿@using Hendel.DAL_copy;
-@model LoginModelsClass;
+@model RevoltedViewModels;
 @{
     ViewData["Title"] = "Регистрация";
 }
 
-<form asp-action="Input" asp-controller="Account" asp-anti-forgery="true" enctype="multipart/form-data"> 
+<form asp-action="PageRevol" asp-controller="Account" asp-anti-forgery="true" enctype="multipart/form-data">
     <div style="display: flex">
-        <img style="width: 200px; margin: auto" src="~/Image/Авторизация(картинка).png" />
+        <img style="width: 200px; margin: auto" src="~/Image/Иконки/Восстановление_icon.png" />
     </div>
 
     <div class="text-center">
@@ -14,24 +14,7 @@
 
             <div>
                 <div>
-                    <input asp-for=Name type="text" style=" width: 250px;
-                       border: none;
-                       border-bottom: 2px solid black;
-                       position: absolute;
-                       margin-top: 190px;
-                       margin-left: -222px;
-                       background-color: transparent;
-                       color: inherit;
-                       outline: none;" />
-                    <img src="~/Image/Слова/имя (1).png" style="margin-top: 170px; margin-left: -221px; position: absolute; width: 25px" />
-
-                </div>
-                <span asp-validation-for="Name" style="color:red; width: 250px; position: absolute; margin-top: 190px;margin-left: 60px;" />
-            </div>
-          
-            <div>
-                <div>
-                    <input asp-for=Password type="password" style=" width: 250px;
+                    <input asp-for=RevoltedPassword type="password" style=" width: 250px;
                        border: none;
                        border-bottom: 2px solid black;
                        position: absolute;
@@ -40,39 +23,69 @@
                        background-color: transparent;
                        color: inherit;
                        outline: none;" />
-                    <img src="~/Image/Слова/пароль (1).png" style="margin-top: 240px; margin-left: -221px; position: absolute; width: 45px" />
+                    <img src="~/Image/Иконки/Пароль для восстановления.png" style="margin-top: 240px; margin-left: -221px; position: absolute; width: 165px" />
 
                 </div>
-                <span asp-validation-for="Password" style="color:red;width: 250px; position: absolute; margin-top: 260px;margin-left: 60px;" />
+                <span asp-validation-for="RevoltedPassword" style="color:red;width: 250px; position: absolute; margin-top: 260px;margin-left: 60px;" />
 
             </div>
 
+            <div>
+                <div>
+                    <input asp-for=NewPassword type="password" style=" width: 250px;
+                       border: none;
+                       border-bottom: 2px solid black;
+                       position: absolute;
+                       margin-top: 330px;
+                       margin-left: -222px;
+                       background-color: transparent;
+                       color: inherit;
+                       outline: none;" />
+                    <img src="~/Image/Иконки/новый пароль.png" style="margin-top: 310px; margin-left: -221px; position: absolute; width: 85px" />
+
+                </div>
+                <span asp-validation-for="NewPassword" style="color:red;width: 250px;position: absolute; margin-top: 330px;margin-left: 60px;" />
+
+            </div>
+
+            <div>
+                <div>
+                    <input asp-for=ConfirmPassword type="password" style=" width: 250px;
+                       border: none;
+                       border-bottom: 2px solid black;
+                       position: absolute;
+                       margin-top: 400px;
+                       margin-left: -222px;
+                       background-color: transparent;
+                       color: inherit;
+                       outline: none;" />
+                    <img src="~/Image/Слова/повторите пароль (1).png" style="margin-top: 380px; margin-left: -221px; position: absolute; width: 105px" />
+
+                </div>
+                <span asp-validation-for="ConfirmPassword" style="color:red;width: 250px; position: absolute; margin-top: 400px;margin-left: 60px;" />
+
+            </div>
 
         </div>
 
 
         <div>
-            <div style="position: absolute; margin-left: 680px; margin-top: 210px;">
-                <a asp-area="" asp-controller="Account" asp-action="Revolted" style="color:blue; font-size: 13px; ">Забыли пароль?</a>
-            </div>
 
-            <input type="submit" value="Войти" class="btn" style=" margin-top: 285px;
+
+            <input type="submit" value="Войти" class="btn" style=" margin-top: 380px;
                                                                 position: absolute;
                                                                 margin-left: -130px;
                                                                 color: white;
                                                                 background-color: black;
                                                                 padding-left: 115px;
                                                                 padding-right: 115px;" />
-
-            <p style="margin-top: 250px; position: absolute; font-size: 13px; margin-left: 550px;">Нет акканут? <a asp-area="" asp-controller="Account" asp-action="Registr" style="color:blue; font-size: 13px; ">Зарегистриоваться</a> </p>
-
         </div>
 
         <div asp-validation-summary="ModelOnly" style="position: absolute;
              top: 729px;
              left: 622px;
              color: red;">
-         </div>
+        </div>
 
         <div style="display: flex; margin-top: -70px">
             <img src="~/Image/РамкаДляРегистрации.png" style="width: 1100px; height: 570px ; margin: auto;" />

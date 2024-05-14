@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using System.Net.Mail;
 using System.Net;
 using static System.Net.Mime.MediaTypeNames;
+using Hendel.DAL_copy;
 
 namespace Hendel_copy.Controllers
 {
@@ -241,8 +242,10 @@ namespace Hendel_copy.Controllers
             if (id != null)
             {
                 Catalog catalog = await _mainContext.Catalogs.FindAsync(id);
+                Favorite favorite =  _mainContext.Favorites.FirstOrDefault(x => x.ProductId == id);
                 if (catalog != null)
                 {
+                    _mainContext.Favorites.Remove(favorite);
                     _mainContext.Catalogs.Remove(catalog);
                     await _mainContext.SaveChangesAsync();
                     return RedirectToAction("Catalog", "Catalog");
@@ -283,6 +286,64 @@ namespace Hendel_copy.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(WatchEditViewModels models)
+        {
+            Catalog catalog = await _mainContext.Catalogs.FindAsync(models.Id);
+            if(models.Image != null)
+            {
+                if(models.Name == null || models.Description == null || models.Amount == null || models.Price == null)
+                {
+                    ModelState.AddModelError("", "Не оствыляйте пустые поля!");
+                    return View();
+                }
+                if (models.Image == null)
+                {
+                    ModelState.AddModelError("", "Выберите картинку (.png, .jpg, .jpeg)");
+                }
+                else if (models.Image.FileName.Contains("png") == false && models.Image.FileName.Contains("jpg") == false && models.Image.FileName.Contains("jpeg") == false)
+                {
+                    ModelState.AddModelError("", "Выберите картинку (.png, .jpg, .jpeg)");
+                }
+                else
+                {
+                    using (var binaryReader = new BinaryReader(models.Image.OpenReadStream()))
+                    {
+                        catalog.Image = binaryReader.ReadBytes((int)models.Image.Length);
+                    }
+                    catalog.Name = models.Name;
+                    catalog.Description = models.Description;
+                    catalog.Price = models.Price;
+                    catalog.Amount = models.Amount;
+                    catalog.WhichCatalog = models.WhichCatalog;
+                    _mainContext.Catalogs.Update(catalog);
+                    await _mainContext.SaveChangesAsync();
+                    return RedirectToAction("Catalog", "Catalog");
+                }
+            }
+            else
+            {
+                catalog.Name = models.Name;
+                catalog.Description = models.Description;
+                catalog.Price = models.Price;
+                catalog.Amount = models.Amount;
+                catalog.WhichCatalog = models.WhichCatalog;
+
+                if (models.Image != null)
+                {
+                    using (var binaryReader = new BinaryReader(models.Image.OpenReadStream()))
+                    {
+                        catalog.Image = binaryReader.ReadBytes((int)models.Image.Length);
+                    }
+                }
+                _mainContext.Catalogs.Update(catalog);
+                await _mainContext.SaveChangesAsync();
+                return RedirectToAction("Catalog", "Catalog");
+            }
+            return View();
+        }
+
+
         public async Task<IActionResult> AddCatalog_Is_a_Archive(int? id)
         {
             CatalogViewModels catalogViewModels = new CatalogViewModels();
@@ -310,30 +371,6 @@ namespace Hendel_copy.Controllers
             }
             else
                 return RedirectToAction("Error");
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(WatchEditViewModels models)
-        {
-            Catalog catalog = await _mainContext.Catalogs.FindAsync(models.Id);
-
-            catalog.Name = models.Name;
-            catalog.Description = models.Description;
-            catalog.Price = models.Price;
-            catalog.Amount = models.Amount;
-            catalog.WhichCatalog = models.WhichCatalog;
-
-            if (models.Image != null)
-            {
-                using (var binaryReader = new BinaryReader(models.Image.OpenReadStream()))
-                {
-                    catalog.Image = binaryReader.ReadBytes((int)models.Image.Length);
-                }
-            }
-            _mainContext.Catalogs.Update(catalog);
-            await _mainContext.SaveChangesAsync();
-            return RedirectToAction("Catalog", "Catalog");
         }
 
         [HttpPost]
@@ -428,7 +465,6 @@ namespace Hendel_copy.Controllers
                 await _mainContext.SaveChangesAsync();
                 return RedirectToAction("BuyProduct", "Account");
             }
-            return View();
 
         }
 
@@ -495,6 +531,9 @@ namespace Hendel_copy.Controllers
                     myKorzina.Password = user.Password;
                     myKorzina.DoublePassword = user.DoublePassword;
                     myKorzina.Role = user.Role;
+
+                    myKorzina.UserNumberOrder = user.UserNumberOrder += 1;
+                    
                     myKorzina.AmountBuyUser += 1;
 
                     myKorzina.AmountBuyWatch = buyProduct.CollWatch;
@@ -522,31 +561,31 @@ namespace Hendel_copy.Controllers
                 }
 
                 //-----------------Уведомление_на_почту-----------------
-                //try
-                //{
-                //    MailMessage message = new MailMessage();
-                //    message.IsBodyHtml = true;
-                //    message.From = new MailAddress("alikhan.iskhadzhiyev@bk.ru", "Hendel");
-                //    message.To.Add($"{user.Email}");
-                //    message.Subject = "Сообщение от Hendel";
-                //    message.Body = "<div>Спасибо за покупку!<div>";
+                try
+                {
+                    MailMessage message = new MailMessage();
+                    message.IsBodyHtml = true;
+                    message.From = new MailAddress("alikhan.iskhadzhiyev@bk.ru", "Hendel");
+                    message.To.Add($"{user.Email}");
+                    message.Subject = "Сообщение от Hendel";
+                    message.Body = "<div>Спасибо за покупку!<div>";
 
-                //    //message.Attachments.Add(new Attachment("путь к файлу"));
+                    //message.Attachments.Add(new Attachment("путь к файлу"));
 
-                //    using (SmtpClient client = new SmtpClient("smpt.mail.ru"))
-                //    {
-                //        client.Credentials = new NetworkCredential("alikhan.iskhadzhiyev@bk.ru", "YxuTJTfqXSBten7UNRaM\r\n");
-                //        client.Port = 587;
-                //        client.EnableSsl = true;
-                //        client.Send(message);
+                    using (SmtpClient client = new SmtpClient("smpt.mail.ru"))
+                    {
+                        client.Credentials = new NetworkCredential("alikhan.iskhadzhiyev@bk.ru", "YxuTJTfqXSBten7UNRaM\r\n");
+                        client.Port = 587;
+                        client.EnableSsl = true;
+                        client.Send(message);
 
-                //        logger.LogInformation("Сообщение отправлено успешно!");
-                //    }
-                //}
-                //catch (Exception e)
-                //{
-                //    logger.LogError(e.GetBaseException().Message);
-                //}
+                        logger.LogInformation("Сообщение отправлено успешно!");
+                    }
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e.GetBaseException().Message);
+                }
             }
 
 
@@ -576,8 +615,6 @@ namespace Hendel_copy.Controllers
             return View();
         }
 
-       
-
         public async Task<IActionResult> IsModelsWindowMethod(bool isModelWindow, int BoolWatch_id)
         {
             Favorite favorite = _mainContext.Favorites.Find(BoolWatch_id);
@@ -594,9 +631,15 @@ namespace Hendel_copy.Controllers
             if (id != null)
             {
                 Favorite catalog = await _mainContext.Favorites.FindAsync(id);
+                BuyProducts buyProducts = _mainContext.BuyProductsTable.FirstOrDefault(x => x.ProductId == catalog.ProductId);
                 if (catalog != null)
                 {
                     _mainContext.Favorites.Remove(catalog);
+                    if(buyProducts != null)
+                    {
+                        _mainContext.BuyProductsTable.Remove(buyProducts);
+                    }
+
                     await _mainContext.SaveChangesAsync();
                     return RedirectToAction("FavoritePage");
                 }

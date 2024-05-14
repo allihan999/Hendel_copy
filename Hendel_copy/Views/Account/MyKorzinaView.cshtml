@@ -14,6 +14,7 @@
         <div style="display: flex; flex-direction: column; margin-left: 100px">
             @foreach (var itemCollection in Model)
             {
+                <p style="margin-top: 10px;margin-bottom: 0px;"> <a style="font-weight: bold">Номер заказа:</a> @itemCollection.UserNumberOrder </p>
                 foreach (var item in itemCollection.KorzinaWatches)
                 {
                     <div style="border: 1px solid black">

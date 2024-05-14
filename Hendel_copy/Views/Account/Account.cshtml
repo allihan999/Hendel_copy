@@ -26,7 +26,7 @@
                 <div style="display: flex;">
                     <p style="font-weight: bold"> Почта: @item.Email
 
-                        <a asp-area="" asp-action="" asp-controller="" asp-route-id=""
+                        @* <a asp-area="" asp-action="" asp-controller="" asp-route-id=""
                                                                                    style="
                                                                                    width: 300px;
                                                                                    margin-left: 20px;
@@ -35,23 +35,42 @@
                                                                                    font-weight: 700;
                                                                                    font-size: 15px;
                                                                                    color: black;
-                                                                                  ">Подтвердить почту</a>
+                                                                                  ">Подтвердить почту</a> *@
                     </p>
                 </div>
 
                 <div hidden="@(User.IsInRole($"{Role.Пользователь.ToString()}") ? false : true)" style="display: flex;">
-                    <a  class="btn btn-dark" asp-area="" asp-action="MyKorzinaView" asp-controller="Account" asp-route-id="@item.Id">Мои покупки</a>
+                    <a class="btn btn-dark" asp-area="" asp-action="MyKorzinaView" asp-controller="Account" asp-route-id="@item.Id" style="background: transparent;
+                                                                                                                                           color: black;
+                                                                                                                                           border: 2px solid black;
+                                                                                                                                           border-radius: 0px;
+                                                                                                                                           width: 165px;
+                                                                                                                                           padding-top: 3px;
+                                                                                                                                           padding-bottom: 3px;">Мои покупки</a>
                 </div>
 
                 <div hidden="@(User.IsInRole($"{Role.Пользователь.ToString()}") ? false : true)" style="display: flex;">
-                    <a class="btn btn-light" asp-area="" asp-action="BuyProduct" asp-controller="Account" asp-route-id="@item.Id">Заказы</a>
+                    <a class="btn btn-light" asp-area="" asp-action="BuyProduct" asp-controller="Account" asp-route-id="@item.Id" style="width: 165px;
+                                                                                                                                         border: 2px solid gray;
+                                                                                                                                         background: transparent;
+                                                                                                                                         border-radius: 0px;
+                                                                                                                                         padding-top: 3px;
+                                                                                                                                         padding-bottom: 3px;
+                                                                                                                                         margin-top: 8px;">Заказы</a>
                 </div>
                 
                 <div>
-                    <a class="btn btn-danger" style="display:flex;justify-content:left" asp-action="LogOut" asp-controller="Account">Выйти из аккаунта</a>
+                    <a class="btn btn-danger" asp-action="LogOut" asp-controller="Account" style="background: transparent;
+                                                                                                  color: red;
+                                                                                                  border: 2px solid;
+                                                                                                  border-radius: 0px;
+                                                                                                  margin-top: 7px;
+                                                                                                  padding-top: 3px;
+                                                                                                  padding-bottom: 3px;">Выйти из аккаунта</a>
                 </div>
 
-                <div style="margin-top: 10px">
+
+                @*  <div style="margin-top: 10px">
                     <a hidden="@(User.Identity.IsAuthenticated ? false : true)" class="buttona" asp-controller="" asp-action="" asp-route-id="" style="    color: black;
                                                                                                                 text-decoration: none;
                                                                                                                 margin-left: 0px;
@@ -62,7 +81,7 @@
                                                                                                                 padding-bottom: 3px;
                                                                                                                 width: 292px;
                                                                                                                 padding-top: 5px;"> Редактирвать профиль </a>
-                </div>
+                </div> *@
             </div>
 
         </div>

@@ -20,7 +20,7 @@ namespace Hendel_copy.Models
         public string Surname { get; set; }
 
         [Required(ErrorMessage = "Не указан электронный адрес")]
-        //[Remote(action: "CheckEmail", controller: "Account", ErrorMessage = "Email уже используется")]
+        [Remote(action: "CheckEmail", controller: "Account", ErrorMessage = "Email уже используется")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Не указан пароль")]

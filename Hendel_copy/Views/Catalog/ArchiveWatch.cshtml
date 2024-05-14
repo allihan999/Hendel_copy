@@ -28,8 +28,9 @@
                         <p style="font-weight: lighter">Big Bang </p>
                         <h4 class="h4" style="margin-left: auto; margin-right:auto; margin-top:15px; font-size: 17px">@item.Name </h4>
                         <p style="border: 1px solid red; width: 40px; height: 2px; background-color: red; margin-top: -6px; margin-left: 167px; "></p>
-                        <a hidden="@(User.Identity.IsAuthenticated ? false : true)" class="button_Edit_Archive_Is_a_Catalog" asp-area="" asp-action="AddCatalog_Is_a_Archive" asp-controller="Catalog" asp-route-id="@item.Id">Изменит параметры</a>
-                        <a class="buttona" asp-controller="Catalog" asp-action="CreateAddingFromTheArchive" asp-route-id="@item.Id"> Добавить в каталог c количесвтом 5 шт. </a>
+                      
+                        <a style="display: flex; margin-left: -30px" hidden="@(User.Identity.IsAuthenticated ? false : true)" class="button_Edit_Archive_Is_a_Catalog" asp-area="" asp-action="AddCatalog_Is_a_Archive" asp-controller="Catalog" asp-route-id="@item.Id">Изменит параметры</a>
+                        <a style="display: flex;margin-left: 45px;" class="buttona" asp-controller="Catalog" asp-action="CreateAddingFromTheArchive" asp-route-id="@item.Id"> Добавить в каталог c количесвтом 5 шт. </a>
                     </div>
                 </div>
             }

@@ -16,7 +16,7 @@ namespace Hendel.DAL_copy
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<BuyProducts> BuyProductsTable { get; set; }
-
+        public DbSet<RevoltedView> RevoltedViews { get; set; }
         public MainContext(DbContextOptions<MainContext> options) : base(options) 
         {
             //Database.EnsureDeleted();
@@ -34,11 +34,11 @@ namespace Hendel.DAL_copy
 
             modelBuilder.Entity<User>().HasData(new List<User>()
             {
-                new User{Id = 1, Role= Role.Пользователь.ToString(),  Name = "Коля",   Surname = "Тарасов", Email = "kolya@gmial.com",  Password = "111", DoublePassword = "111"},
-                new User{Id = 2, Role = Role.Пользователь.ToString(), Name = "Сергей", Surname = "Малеев",  Email = "sergey@gmial.com", Password = "222", DoublePassword = "222"},
+                new User{Id = 1, Role= Role.Пользователь.ToString(),  Name = "Коля",   Surname = "Тарасов", Email = "kolya@gmial.com",  Password = "111", DoublePassword = "111", UserNumberOrder = 0},
+                new User{Id = 2, Role = Role.Пользователь.ToString(), Name = "Сергей", Surname = "Малеев",  Email = "sergey@gmial.com", Password = "222", DoublePassword = "222", UserNumberOrder = 0},
 
-                new User{Id = 3, Role= Role.Администратор.ToString(),  Name = "Алихан", Surname = "Исхаджиев", Email = "alihan@gmial.com", Password = "111", DoublePassword = "111"},
-                new User{Id = 4, Role = Role.Администратор.ToString(), Name = "Турпал", Surname = "Мамакаев",  Email = "turpal@gmial.com", Password = "222", DoublePassword = "222"}
+                new User{Id = 3, Role= Role.Администратор.ToString(),  Name = "Алихан", Surname = "Исхаджиев", Email = "alihan@gmial.com", Password = "111", DoublePassword = "111", UserNumberOrder = 0},
+                new User{Id = 4, Role = Role.Администратор.ToString(), Name = "Турпал", Surname = "Мамакаев",  Email = "turpal@gmial.com", Password = "222", DoublePassword = "222", UserNumberOrder = 0}
 
             });
 
